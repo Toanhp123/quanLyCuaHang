@@ -1,6 +1,7 @@
 module.exports = {
     AccountStatus: {
         NOT_FOUND: 'NOT_FOUND',
+        NOT_ACTIVE: 'NOT_ACTIVE',
         ERROR: 'REGISTER_FAILED',
         NOT_ACTIVE: 'NOT_ACTIVE',
         ALREADY_EXISTS: 'ALREADY_EXISTS',
