@@ -43,12 +43,12 @@ class AuthController {
     }
 
     // [POST] /auth/logout
-    logout(req, res, next) {
+    async logout(req, res, next) {
         const id = req.user.id;
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
         try {
-            authService.logout(id, ip);
+            await authService.logout(id, ip);
 
             // Xóa 2 cookie khi đăng xuất
             deleteCookie(res, TokenName.ACCESS);
