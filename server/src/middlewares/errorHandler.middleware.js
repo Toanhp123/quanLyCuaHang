@@ -15,6 +15,7 @@ const errorHandler = (err, req, res, next) => {
             CookieStatus.ERROR_SIGN,
             AccountStatus.ERROR,
             AccountStatus.NOT_FOUND,
+            AccountStatus.NOT_ACTIVE,
         ];
 
         if (handledErrorCodes.includes(err.errorCode)) {

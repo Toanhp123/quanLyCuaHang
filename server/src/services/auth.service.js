@@ -25,6 +25,11 @@ class AuthService {
                 statusCode: 401,
                 errorCode: AccountStatus.NOT_FOUND,
             });
+        } else if (user.account_status !== 'approved') {
+            throw new AppError('Account is not active', {
+                statusCode: 401,
+                errorCode: AccountStatus.NOT_ACTIVE,
+            });
         }
 
         const isPasswordCorrect = await checkPassword(
