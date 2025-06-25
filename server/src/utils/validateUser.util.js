@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-var validator = require('email-validator');
+const validator = require('email-validator');
 
 const checkPassword = async (password, passwordHash) => {
     return await bcrypt.compare(password, passwordHash);

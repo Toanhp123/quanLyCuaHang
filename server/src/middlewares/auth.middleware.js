@@ -121,7 +121,7 @@ const checkAccessToken = (req, res, next) => {
 
     if (!accessToken.payload) {
         return res.status(401).json({
-            message: 'Token had expired',
+            message: 'Access token had expired',
         });
     }
 
@@ -144,13 +144,13 @@ const checkRefreshToken = (req, res, next) => {
 
     if (!refreshToken.payload) {
         return res.status(401).json({
-            message: 'Token does not have payload',
+            message: 'Refresh token does not have payload',
         });
     }
 
     if (!refreshToken.type) {
         return res.status(401).json({
-            message: 'Token does not have type',
+            message: 'Refresh token does not have type',
         });
     }
 
@@ -159,7 +159,7 @@ const checkRefreshToken = (req, res, next) => {
         refreshToken.type !== TokenType.REFRESH
     ) {
         return res.status(401).json({
-            message: 'This type of token is not supported',
+            message: 'This type of token is not supported for refresh token',
         });
     }
 

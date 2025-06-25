@@ -48,6 +48,12 @@ class AccountService {
             where: { account_status },
         });
     }
+
+    async getAccountByCondition(query) {
+        return await Account.findAll({
+            where: query,
+        });
+    }
 }
 
 module.exports = new AccountService();
