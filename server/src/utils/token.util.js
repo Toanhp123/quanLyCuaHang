@@ -9,6 +9,11 @@ const { TokenStatus, TokenType } = require('../configs/constants.config');
 const jwt = require('jsonwebtoken');
 const AppError = require('./errorCustom.util');
 
+/**
+ * Hàm ký access token
+ * @param {Object} payload thông tin token
+ * @return {Object} access token được ký
+ */
 const signAccessToken = (payload) => {
     try {
         return jwt.sign(payload, JWT_ACCESS_SECRET, {
@@ -22,6 +27,11 @@ const signAccessToken = (payload) => {
     }
 };
 
+/**
+ *
+ * @param {Object} payload
+ * @returns {Object} refresh token được ký
+ */
 const signRefreshToken = (payload) => {
     try {
         return jwt.sign(payload, JWT_REFRESH_SECRET, {
@@ -38,6 +48,7 @@ const signRefreshToken = (payload) => {
 /**
  * Hàm kiểm tra token access và refresh
  * @param {object} token object chứa thông tin token
+ * @return {Boolean}
  */
 const verifyToken = (token) => {
     try {

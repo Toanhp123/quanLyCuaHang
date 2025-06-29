@@ -13,9 +13,13 @@ const accountService = require('../services/account.service');
 class AuthService {
     /**
      * Hàm đăng nhập:
-     * - Kiểm tra tài khoản và mật khẩu
-     * - Nếu đúng thì trả về thông tin người dùng
-     * - Nếu sai thì trả về lỗi
+     * - Kiểm tra xem tài khoản có tồn tại không
+     * - Kiểm tra xem tài khoản có hoạt động không
+     * - Kiểm tra mật khẩu có đúng không
+     * - Tạo Access Token và Refresh Token từ thông tin người dùng
+     * @param {String} username - Tên đăng nhập của người dùng
+     * @param {String} password - Mật khẩu của người dùng
+     * @return {Object} Trả về thông tin người dùng và token
      */
     async login(username, password) {
         const user = await accountService.getAccountByUsername(username);
@@ -69,7 +73,10 @@ class AuthService {
 
     /**
      * Hàm đăng xuất:
-     * - Đánh dấu session log là không hợp lệ
+     * - Cập nhật session log để đánh dấu là không hợp lệ
+     * - Cập nhật thời gian đăng xuất
+     * @param {number} id - ID của người dùng
+     * @param {string} ip - Địa chỉ IP của người dùng
      */
     async logout(id, ip) {
         const checkSessionLog = await SessionLog.findOne({
@@ -98,8 +105,11 @@ class AuthService {
 
     /**
      * Hàm đăng ký:
+     * - Kiểm tra xem tài khoản đã tồn tại chưa
+     * - Kiểm tra xem email đã tồn tại chưa
+     * - Mã hóa mật khẩu
      * - Tạo tài khoản mới
-     * - Nếu tài khoản đã tồn tại thì trả về lỗi
+     * @param {Object} user - Thông tin người dùng
      */
     async register(user) {
         const transaction = await sequelize.transaction();
@@ -170,9 +180,11 @@ class AuthService {
 
     /**
      * Hàm tạo session log:
-     * - Tạo session log cho người dùng khi đăng nhập thành công
-     * - Nếu session log đã tồn tại thì cập nhật lại thời gian đăng nhập và đánh dấu là hợp lệ
-     * - Lưu thông tin session log vào database
+     * - Kiểm tra xem session log đã tồn tại chưa
+     * - Nếu chưa tồn tại thì tạo mới
+     * - Nếu đã tồn tại nhưng không hợp lệ thì cập nhật lại session log
+     * @param {number} id - ID của người dùng
+     * @param {string} ip - Địa chỉ IP của người dùng
      */
     async createSessionLog(id, ip) {
         const checkSessionLog = await SessionLog.findOne({
@@ -208,6 +220,9 @@ class AuthService {
     /**
      * Hàm kiểm tra session log:
      * - Kiểm tra xem session log của refresh token có hợp lệ không
+     * @param {number} id - ID của người dùng
+     * @param {string} ip - Địa chỉ IP của người dùng
+     * @return {boolean} Trả về true nếu session log hợp lệ, false nếu không hợp lệ
      */
     async checkRefreshTokenSession(id, ip) {
         const checkSessionLog = await SessionLog.findOne({
@@ -227,6 +242,11 @@ class AuthService {
 
     /**
      * Hàm tạo Access Token nếu Refresh Token hợp lệ:
+     * - Kiểm tra xem session log của refresh token có hợp lệ không
+     * - Nếu hợp lệ thì tạo Access Token mới
+     * @param {Object} payload - Payload của Refresh Token
+     * @param {string} ip - Địa chỉ IP của người dùng
+     * @return {string} Trả về Access Token mới
      */
     async refreshTokenHandler(payload, ip) {
         // Check xem session refresh token có hợp lệ không
