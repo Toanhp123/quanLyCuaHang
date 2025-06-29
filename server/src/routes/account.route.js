@@ -6,13 +6,18 @@ const accountController = require('../controllers/account.controller');
 const router = express.Router();
 
 // [GET] /account/:username
+// TODO: Remember to add checkAccessToken middleware
 router.get(
     '/:username',
-    checkAccessToken,
+    // checkAccessToken,
     accountController.getAccountByUsername,
 );
 
 // [GET] /account
-router.get('/', checkAccessToken, accountController.getAccountByCondition);
-
+// TODO: Remember to add checkAccessToken middleware
+router.get(
+    '/',
+    // checkAccessToken,
+    accountController.getAccountByCondition,
+);
 module.exports = router;
