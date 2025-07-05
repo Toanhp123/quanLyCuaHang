@@ -2,35 +2,52 @@ const {
     TokenStatus,
     CookieStatus,
     AccountStatus,
+    ProfileStatus,
 } = require('../configs/constants.config');
 
 const AppError = require('../utils/errorCustom.util');
 
 const errorHandler = (err, req, res, next) => {
-    if (err instanceof AppError) {
-        const handledErrorCodes = [
-            TokenStatus.EXPIRED,
-            TokenStatus.INVALID,
-            TokenStatus.INCORRECT_FORMAT,
-            CookieStatus.ERROR_SIGN,
-            AccountStatus.ERROR,
-            AccountStatus.NOT_FOUND,
-            AccountStatus.NOT_ACTIVE,
-        ];
+    const isAppError = err instanceof AppError;
 
-        if (handledErrorCodes.includes(err.errorCode)) {
-            return res.status(err.statusCode).json({ message: err.message });
-        }
+    const knownErrorCodes = [
+        TokenStatus.EXPIRED,
+        TokenStatus.INVALID,
+        TokenStatus.INCORRECT_FORMAT,
+        CookieStatus.ERROR_SIGN,
+        AccountStatus.ERROR,
+        AccountStatus.NOT_FOUND,
+        AccountStatus.NOT_ACTIVE,
+        ProfileStatus.NOT_FOUND,
+    ];
 
-        // Xử lý lỗi không nằm trong danh sách trên
-        return res
-            .status(500)
-            .json({ message: 'Something went wrong: ' + err.message });
-    } else {
-        return res
-            .status(500)
-            .json({ message: 'Server error: ' + err.message });
+    const statusCode = isAppError ? err.statusCode : 500;
+    const errorCode =
+        isAppError && knownErrorCodes.includes(err.errorCode)
+            ? err.errorCode
+            : 'UNKNOWN_ERROR';
+    const message =
+        isAppError && knownErrorCodes.includes(err.errorCode)
+            ? err.message
+            : 'Something went wrong';
+
+    // Log cho debug
+    if (statusCode === 500) {
+        console.error('[Server Error]', {
+            message: err.message,
+            stack: err.stack,
+            url: req.originalUrl,
+            method: req.method,
+            ip: req.ip,
+        });
     }
+
+    res.status(statusCode).json({
+        status: 'ERROR',
+        statusCode,
+        errorCode,
+        message,
+    });
 };
 
 module.exports = errorHandler;
