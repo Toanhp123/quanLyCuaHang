@@ -8,16 +8,7 @@ class profileController {
         try {
             const profile = await ProfileService.getProfile(id);
 
-            if (!profile) {
-                return res.status(404).json({
-                    message: `Profile not found`,
-                });
-            }
-            
-            return res.status(200).json({
-                message: `Profile found`,
-                data: profile,
-            });
+            res.status(200).json(profile);
         } catch (err) {
             next(err);
         }

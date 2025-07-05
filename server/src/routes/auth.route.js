@@ -8,10 +8,10 @@ const {
 } = require('../middlewares/auth.middleware');
 
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const authController = require('../controllers/auth.controller');
 
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
 // [POST] /auth/login
 router.post('/login', validateUserLogin, authController.login);
@@ -62,11 +62,6 @@ router.post('/fake-cookies', (req, res) => {
     });
 
     res.status(200).json({ message: 'Fake cookies created' });
-});
-
-// [GET] /auth/
-router.get('/', (req, res) => {
-    res.send('Test auth page');
 });
 
 module.exports = router;

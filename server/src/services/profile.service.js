@@ -1,4 +1,7 @@
 const { Customer, Account } = require('../models');
+const { ProfileStatus } = require('../configs/constants.config');
+
+const AppError = require('../utils/errorCustom.util');
 
 class ProfileService {
     /**
@@ -7,7 +10,7 @@ class ProfileService {
      * @returns {Promise<Object>} Thông tin hồ sơ của khách hàng
      */
     async getProfile(customer_id) {
-        return await Customer.findOne({
+        const customer = await Customer.findOne({
             attributes: ['first_name', 'last_name', 'phone_number', 'address'],
             where: { customer_id },
             include: [
@@ -17,6 +20,15 @@ class ProfileService {
                 },
             ],
         });
+
+        if (!customer) {
+            throw new AppError(`Can't find customer has id: ${customer_id}`, {
+                statusCode: 401,
+                errorCode: ProfileStatus.NOT_FOUND,
+            });
+        }
+
+        return customer;
     }
 }
 

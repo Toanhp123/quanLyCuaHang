@@ -1,9 +1,14 @@
 const express = require('express');
-
-const router = express.Router();
 const profileController = require('../controllers/profile.controller');
 
+const router = express.Router();
+
 // [POST] /profile/:username
-router.get('/:id', profileController.getProfile);
+// TODO: Remember to add checkAccessToken middleware
+router.get(
+    '/:id',
+    // checkAccessToken,
+    profileController.getProfile,
+);
 
 module.exports = router;

@@ -1,11 +1,14 @@
 module.exports = {
     AccountStatus: {
-        NOT_FOUND: 'NOT_FOUND',
-        NOT_ACTIVE: 'NOT_ACTIVE',
-        ERROR: 'REGISTER_FAILED',
-        NOT_ACTIVE: 'NOT_ACTIVE',
-        ALREADY_EXISTS: 'ALREADY_EXISTS',
-        WRONG_PASSWORD: 'WRONG_PASSWORD',
+        NOT_FOUND: 'ACCOUNT_NOT_FOUND',
+        NOT_ACTIVE: 'ACCOUNT_NOT_ACTIVE',
+        ERROR: 'ACCOUNT_REGISTER_FAILED',
+        NOT_ACTIVE: 'ACCOUNT_NOT_ACTIVE',
+        ALREADY_EXISTS: 'ACCOUNT_ALREADY_EXISTS',
+        WRONG_PASSWORD: 'ACCOUNT_WRONG_PASSWORD',
+    },
+    ProfileStatus: {
+        NOT_FOUND: 'PROFILE_NOT_FOUND',
     },
     TokenStatus: {
         EXPIRED: 'TOKEN_EXPIRED',

@@ -4,7 +4,7 @@ class AppError extends Error {
 
         // Lưu thông tin bổ sung tùy chọn
         this.statusCode = options.statusCode || 500;
-        this.errorCode = options.errorCode || null;
+        this.errorCode = options.errorCode || 'UNKNOWN_ERROR';
         this.details = options.details || null;
 
         // Đánh dấu đây là lỗi xử lý được
